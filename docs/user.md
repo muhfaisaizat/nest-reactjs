@@ -6,13 +6,13 @@ Endpoint : POST /api/users
 
 Request Body :
 
-...json
+```json
 {
     "username" : "Acel",
     "email" : "Acel@gmail.com",
     "password" : "acel123" 
 }
-...
+```
 
 Response Body (Success) :
 ...json
