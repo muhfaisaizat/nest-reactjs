@@ -24,13 +24,13 @@ export class UserService {
             request,
         );
 
-        const totalUserWithSameUsername = await this.prismaService.user.count({
+        const totalUserWithSameEmail = await this.prismaService.user.count({
             where: {
                 email: registerRequest.email
             }
         })
 
-        if(totalUserWithSameUsername != 0){
+        if(totalUserWithSameEmail != 0){
             throw new HttpException('email Already Exist', 400);
         }
 
@@ -41,8 +41,9 @@ export class UserService {
         });
 
         return {
-            username: user.username,
             email: user.email,
+            username: user.username,
+            
         };
     }
 
@@ -54,7 +55,7 @@ export class UserService {
         );
         let user = await this.prismaService.user.findUnique({
             where: {
-                username: loginRequest.email
+                email: loginRequest.email
             }
         })
 
@@ -73,7 +74,7 @@ export class UserService {
 
         user = await this.prismaService.user.update({
             where:{
-                username: loginRequest.email
+                email: loginRequest.email
             },
             data:{
                 token: uuid(),
@@ -81,16 +82,17 @@ export class UserService {
         });
 
         return {
-            username: user.username,
             email: user.email,
+            username: user.username,
             token: user.token,
           };
     }
 
     async get(user: User): Promise<UserResponse> {
         return {
-          username: user.username,
           email: user.email,
+          username: user.username,
+          
         };
       }
 
@@ -114,7 +116,7 @@ export class UserService {
     
         const result = await this.prismaService.user.update({
           where: {
-            username: user.email,
+            email: user.email,
           },
           data: user,
         });
@@ -128,7 +130,7 @@ export class UserService {
       async logout(user: User): Promise<UserResponse> {
         const result = await this.prismaService.user.update({
           where: {
-            username: user.email,
+            email: user.email,
           },
           data: {
             token: null,
