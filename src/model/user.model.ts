@@ -1,11 +1,21 @@
 export class RegisterUserRequest {
-    username: string;
     email: string;
+    username: string;
     password: string;
 }
 
 export class UserResponse {
-    username: string;
     email: string;
+    username: string;
     token?: string;
 }
+
+export class LoginUserRequest {
+    email: string;
+    password: string;
+}
+
+export class UpdateUserRequest {
+    username?: string;
+    password?: string;
+  }
