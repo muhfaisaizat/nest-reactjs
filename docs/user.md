@@ -105,7 +105,7 @@ Request Body :
 ```
 
 Response Body (Success) :
-...json
+```json
 {
     "data" : {
         "email" : "Acel@gmail.com",
