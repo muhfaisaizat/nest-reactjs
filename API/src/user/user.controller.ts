@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Patch, Post, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { LoginUserRequest, RegisterUserRequest, UpdateUserRequest, UserResponse } from 'src/model/user.model';
 import { WebResponse } from 'src/model/web.model';
@@ -6,8 +6,8 @@ import { Auth } from 'src/common/auth.decorator';
 import { User } from '@prisma/client';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('/api/users')
 
+@ApiTags('/api/users')
 @Controller('/api/users')
 export class UserController {
   constructor(private userService: UserService) {}
@@ -36,7 +36,7 @@ export class UserController {
 
   @Get('/current')
   @HttpCode(200)
-  @ApiBearerAuth() // Kamu juga bisa menambahkan di sini jika hanya endpoint ini yang memerlukan autentikasi
+  @ApiBearerAuth() // Untuk dokumentasi Swagger
   async get(@Auth() user: User): Promise<WebResponse<UserResponse>> {
     const result = await this.userService.get(user);
     return {
@@ -46,7 +46,7 @@ export class UserController {
 
   @Patch('/current')
   @HttpCode(200)
-  @ApiBearerAuth() // Tambahkan di sini juga
+  @ApiBearerAuth() // Untuk dokumentasi Swagger
   async update(
     @Auth() user: User,
     @Body() request: UpdateUserRequest,
@@ -59,7 +59,7 @@ export class UserController {
 
   @Delete('/current')
   @HttpCode(200)
-  @ApiBearerAuth() // Tambahkan di sini juga
+  @ApiBearerAuth() // Untuk dokumentasi Swagger
   async logout(@Auth() user: User): Promise<WebResponse<boolean>> {
     await this.userService.logout(user);
     return {

@@ -8,6 +8,7 @@ export class AuthMiddleware implements NestMiddleware {
 
   async use(req: any, res: any, next: (error?: any) => void) {
     const token = req.headers['authorization'] as string;
+    
     if (token) {
       const user = await this.prismaService.user.findFirst({
         where: {
