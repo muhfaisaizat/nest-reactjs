@@ -4,6 +4,8 @@ import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import BackgroundImage from "../../image/bg.jpg";
 import Logo from "../../image/logo192.png";
+import axios from "axios";
+import { API_URL } from "../../helpers/networt";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -16,19 +18,21 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    await delay(500);
-    console.log(`Username :${inputUsername}, Password :${inputPassword}`);
-    if (inputUsername !== "admin" || inputPassword !== "admin") {
-      setShow(true);
+
+    try {
+      const response = await axios.post(`${API_URL}/api/users/login`, {
+        email: inputUsername,
+        password: inputPassword,
+      });
+      localStorage.setItem("token", response.data.token);
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Login failed:", error);
+      setShow(true); // Tampilkan alert jika login gagal
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
-
-  const handlePassword = () => {};
-
-  function delay(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
 
   return (
     <div
@@ -46,7 +50,7 @@ const Login = () => {
           alt="logo"
         />
         <div className="h4 mb-2 text-center">Sign In</div>
-        {/* ALert */}
+        {/* Alert */}
         {show ? (
           <Alert
             className="mb-2"
@@ -110,7 +114,6 @@ const Login = () => {
           </Button>
         </div>
       </Form>
-      
     </div>
   );
 };

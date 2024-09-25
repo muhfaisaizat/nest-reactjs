@@ -17,6 +17,7 @@ model User {
   email    String    @id @db.VarChar(100)
   username String    @db.VarChar(100)
   password String    @db.VarChar(100)
+  
   token    String?   @db.VarChar(100)
 
   @@map("user")

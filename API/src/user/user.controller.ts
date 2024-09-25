@@ -7,12 +7,12 @@ import { User } from '@prisma/client';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 
-@ApiTags('/api/users')
-@Controller('/api/users')
+@ApiTags('/api')
+@Controller('/api/')
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @Post()
+  @Post('/Register')
   @HttpCode(200)
   async register(
     @Body() request: RegisterUserRequest,
@@ -34,7 +34,7 @@ export class UserController {
     };
   }
 
-  @Get('/current')
+  @Get('/User')
   @HttpCode(200)
   @ApiBearerAuth() // Untuk dokumentasi Swagger
   async get(@Auth() user: User): Promise<WebResponse<UserResponse>> {
@@ -44,7 +44,7 @@ export class UserController {
     };
   }
 
-  @Patch('/current')
+  @Patch('/forget-password')
   @HttpCode(200)
   @ApiBearerAuth() // Untuk dokumentasi Swagger
   async update(
@@ -57,7 +57,7 @@ export class UserController {
     };
   }
 
-  @Delete('/current')
+  @Delete('/logout')
   @HttpCode(200)
   @ApiBearerAuth() // Untuk dokumentasi Swagger
   async logout(@Auth() user: User): Promise<WebResponse<boolean>> {
